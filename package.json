@@ -4,15 +4,18 @@
   "description": "A simple chess game",
   "main": "index.js",
   "scripts": {
-    "build": "echo 'No build step defined' && exit 0"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "build": "echo 'No build step defined' && exit 0",
+    "start": "echo 'Start script not defined' && exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZokkaXDJ9/chess"
+    "url": "https://github.com/ZokkaXDJ9/chess.git"
   },
   "author": "Your Name",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1"
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
   }
 }
