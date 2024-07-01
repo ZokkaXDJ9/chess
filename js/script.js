@@ -1,7 +1,10 @@
-import firebaseConfig from "./firebaseConfig.js";
-
 $(document).ready(function () {
-  firebase.initializeApp(firebaseConfig);
+  console.log("Document ready, initializing Firebase");
+  firebase.initializeApp(window.firebaseConfig);
+  console.log("Firebase initialized");
+
+  const db = firebase.firestore();
+  console.log("Firestore initialized");
 
   const statusElement = $("#status");
   const fenElement = $("#fen");
@@ -12,27 +15,32 @@ $(document).ready(function () {
   let currentPosition = "start";
   let gameId = null;
 
-  const db = firebase.firestore();
-
   function initializeGame() {
+    console.log("Initializing game");
     gameId = generateGameId();
     if (!gameId) {
-      // Create a new game entry in Firestore
+      console.log("No game ID found, creating a new game");
       const newGameRef = db.collection("games").doc();
       gameId = newGameRef.id;
-      newGameRef.set({
-        fen: game.fen(),
-        pgn: game.pgn(),
-      });
-
-      // Update the URL with the new game ID
+      newGameRef
+        .set({
+          fen: game.fen(),
+          pgn: game.pgn(),
+        })
+        .then(() => {
+          console.log("New game created with ID:", gameId);
+        })
+        .catch((error) => {
+          console.error("Error creating new game:", error);
+        });
       window.history.replaceState(null, null, `?game=${gameId}`);
     }
 
-    // Listen for changes in the game state
+    console.log("Listening for game state changes for game ID:", gameId);
     db.collection("games")
       .doc(gameId)
       .onSnapshot((doc) => {
+        console.log("Received game state update");
         const gameData = doc.data();
         if (gameData) {
           game.load(gameData.fen);
@@ -119,10 +127,18 @@ $(document).ready(function () {
     updatePgnTable();
 
     // Update the game state in Firestore
-    db.collection("games").doc(gameId).set({
-      fen: game.fen(),
-      pgn: game.pgn(),
-    });
+    db.collection("games")
+      .doc(gameId)
+      .set({
+        fen: game.fen(),
+        pgn: game.pgn(),
+      })
+      .then(() => {
+        console.log("Game state updated in Firestore");
+      })
+      .catch((error) => {
+        console.error("Error updating game state in Firestore:", error);
+      });
   }
 
   function onSnapEnd() {
@@ -174,12 +190,10 @@ $(document).ready(function () {
       const whiteMove = history[i] ? history[i].san : "";
       const blackMove = history[i + 1] ? history[i + 1].san : "";
       const row = `<tr>
-                            <td>${moveNumber}</td>
-                            <td class="move" data-index="${i}">${whiteMove}</td>
-                            <td class="move" data-index="${
-                              i + 1
-                            }">${blackMove}</td>
-                         </tr>`;
+                      <td>${moveNumber}</td>
+                      <td class="move" data-index="${i}">${whiteMove}</td>
+                      <td class="move" data-index="${i + 1}">${blackMove}</td>
+                    </tr>`;
       pgnBody.append(row);
       moveNumber++;
     }
