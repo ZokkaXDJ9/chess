@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="js/chessboard-1.0.0.min.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+      }
+      #board-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #board {
+        width: 98vmin;
+        height: 98vmin;
+      }
+      #pgnContainer {
+        width: 300px;
+        padding: 10px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        height: 100vh;
+      }
+      #pgnTable {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      #pgnTable th,
+      #pgnTable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      #pgnTable th {
+        background-color: #f2f2f2;
+        text-align: center;
+      }
+      .move {
+        cursor: pointer;
+      }
+      .move:hover {
+        background-color: lightblue;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="board-container">
+      <div id="board"></div>
+    </div>
+    <div id="pgnContainer">
+      <table id="pgnTable">
+        <thead>
+          <tr>
+            <th>Move</th>
+            <th>White</th>
+            <th>Black</th>
+          </tr>
+        </thead>
+        <tbody id="pgnBody"></tbody>
+      </table>
+    </div>
+    <div id="firebaseui-auth-container"></div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/4.8.0/firebaseui.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.firebase.com/libs/firebaseui/4.8.0/firebaseui.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/chess.js"></script>
+    <script src="js/chessboard-1.0.0.min.js"></script>
+    <script src="js/firebaseConfig.js" type="module"></script>
+    <script src="js/script.js" type="module"></script>
+  </body>
+</html>
